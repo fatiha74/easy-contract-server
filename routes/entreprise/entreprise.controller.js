@@ -8,9 +8,6 @@ const SECRET = require('../../middleware/config.js')
 
 // const loginRouter = express.Router();
 
-
-
-
 // ! GET all entreprise
 const getAllEntreprise = (async (req, res) => {
     try {
@@ -27,14 +24,17 @@ const getAllEntreprise = (async (req, res) => {
 
 // ! GET une entreprise
 const getEntreprise = (async (req, res) => {
-    const { id } = verifyToken.req.entreprise
+
+
     try {
+        const { id } = verifyToken.req.entreprise
         // L'id passé en parametre dans l'url sur postman
-        // const { id } = req.params;
+        //  const { id } = req.params;
         const entreprise = await pool.query("SELECT * FROM entreprise WHERE entreprise_id = $1", [id]);
         res.json(entreprise.rows[0]);
-        console.log(req.params)
     } catch (err) {
+        console.log(req.body)
+
         res.status(400).send(err.message)
 
     }
@@ -57,13 +57,19 @@ const getProfileEntreprise = (async (req, res) => {
 })
 
 
+
+
 // !CREATE
 const createEntreprise = (async (req, res) => {
 
     try {
 
         // on recupere la valeur de l'attribut
-        let { civilite, nom, prenom,telephone, rue, cp,ville, email, mdp, role, siret, raison_sociale, code_ape } = req.body;
+        // let { civilite, nom, prenom, telephone, rue, cp, ville, email, mdp, role, siret, raison_sociale, code_ape } = req.body;
+
+          // on recupere la valeur de l'attribut
+          let { civilite, nom, prenom, telephone, rue, cp, ville, email, mdp, siret, raison_sociale, code_ape } = req.body;
+        
         // la valeur dans values $1 recupere la description que l'on a ecrit sur postman
         // RETURNING * retourne à chaque fois la data ici description que l'on peut voir sur postman
 
@@ -78,17 +84,20 @@ const createEntreprise = (async (req, res) => {
         //! on hash le mot de passe
         mdp = hashPassword(mdp);
 
+// avec role
+        // let newEntreprise = await pool.query("INSERT INTO entreprise (civilite,nom,prenom,telephone,rue,cp,ville,email,mdp,role,siret,raison_sociale,code_ape) VALUES($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13) RETURNING * ",
+        //     [civilite, nom, prenom, telephone, rue, cp, ville, email, mdp, role, siret, raison_sociale, code_ape]);
 
-        let newEntreprise = await pool.query("INSERT INTO entreprise (civilite,nom,prenom,telephone,rue,cp,ville,email,mdp,role,siret,raison_sociale,code_ape) VALUES($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13) RETURNING * ",
-            [civilite, nom, prenom,telephone, rue, cp, ville, email, mdp,role, siret, raison_sociale, code_ape]);
-console.log(newEntreprise)
+                    let newEntreprise = await pool.query("INSERT INTO entreprise (civilite,nom,prenom,telephone,rue,cp,ville,email,mdp,siret,raison_sociale,code_ape) VALUES($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12) RETURNING * ",
+            [civilite, nom, prenom, telephone, rue, cp, ville, email, mdp, siret, raison_sociale, code_ape]);
+        console.log(newEntreprise)
         // * recuperer le id de l'entreprise qui vient d'etre cree
         let ent = newEntreprise.rows[0]
         let id = ent.entreprise_id
 
 
 
-        
+
         //! create the token
         const token = jwt.sign(
             {
@@ -99,7 +108,7 @@ console.log(newEntreprise)
                 expiresIn: "720h",
             }
         )
-        
+
         res.json({ ...newEntreprise, token })
         console.log(req.body)
     } catch (err) {
@@ -114,12 +123,12 @@ const updateEntreprise = (async (req, res) => {
 
     // console.log(req.params);
     // const { id } = req.entreprise
-    const {id}=req.params
+    let { id } = req.params
     try {
         // L'id passé en parametre dans l'url sur postman
         // const { id } = req.params;
 
-        const {  civilite, nom, prenom,telephone, rue, cp,ville, email, mdp,role, siret, raison_sociale, code_ape} = req.body;
+        let { civilite, nom, prenom, telephone, rue, cp, ville, email, mdp, role, siret, raison_sociale, code_ape } = req.body;
 
         //! validate mail
         if (!isEmail(email)) {
@@ -138,17 +147,15 @@ const updateEntreprise = (async (req, res) => {
             res.status(400).send("l'entreprise existe déjà")
             return false;
         }
-try{
+
         // [description, id] == [argument 1 $1, argument 2 $2]
-        const updateEntreprise = await pool.query("UPDATE entreprise SET civilite=$1,nom = $2, prenom = $3,telephone=$4,rue = $5, cp = $6,ville=$7,email=$8,mdp=$9 ,role=$10,siret=$11, raison_sociale= $12, code_ape=$13  WHERE entreprise_id = $14",
-            [ civilite, nom, prenom,telephone, rue, cp,ville, email, mdp,role, siret, raison_sociale, code_ape, id]);
-}catch(err){
-    res.status(400).send("pb requete")
-}
-console.log(updateEntreprise)
+        let updateEntreprise = await pool.query("UPDATE entreprise SET civilite=$1,nom = $2, prenom = $3,telephone=$4,rue = $5, cp = $6,ville=$7,email=$8,mdp=$9 ,role=$10,siret=$11, raison_sociale= $12, code_ape=$13  WHERE entreprise_id = $14",
+            [civilite, nom, prenom, telephone, rue, cp, ville, email, mdp, role, siret, raison_sociale, code_ape, id]);
+
+        console.log(updateEntreprise)
         res.json(updateEntreprise)
     } catch (err) {
-        res.status(400).send({MESSAGE : err.message, erreur : "update"})
+        res.status(400).send({ MESSAGE: err.message, erreur: "update" })
     }
 
 })

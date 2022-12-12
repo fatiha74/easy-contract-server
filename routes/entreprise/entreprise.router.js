@@ -4,12 +4,12 @@ const {createEntreprise,getAllEntreprise,getEntreprise,updateEntreprise,deleteEn
 const verifyToken = require('../../middleware/auth_middleware')
 
 
-
-
-
 entrepriseRouter
 // * create entreprise      
 .post('/',createEntreprise)
+
+// * create entreprise      
+.post('/registerEntreprise',createEntreprise)
 
 // * login entreprise       
 .post('/login',loginEntreprise)
@@ -22,11 +22,11 @@ entrepriseRouter
 // * read tous les entreprises
 .get('/',getAllEntreprise)
 
-// *read un entreprise
-.get('/:id',getEntreprise)
+// // *read un entreprise
+// .get('/:id',getEntreprise)
 
-// // *read le profile de l'entreprise
-// .get('/',getEntreprise)
+// *read le profile de l'entreprise
+.get('/',getEntreprise)
 
 // * update entreprise
 .put('/:id',updateEntreprise)
