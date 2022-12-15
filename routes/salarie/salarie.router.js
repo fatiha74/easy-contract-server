@@ -12,6 +12,7 @@ salarieRouter
 // * login salarie
 .post('/login',loginSalarie)
 
+
 // ! on verifie le token  à chaque fois pour toutes les actions suivantes
 .use(verifyToken)
 

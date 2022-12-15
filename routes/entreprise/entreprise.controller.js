@@ -27,7 +27,8 @@ const getEntreprise = (async (req, res) => {
 
 
     try {
-        const { id } = verifyToken.req.entreprise
+        const { id } = req.entreprise
+        // const { id } = verifyToken.req.entreprise
         // L'id passé en parametre dans l'url sur postman
         //  const { id } = req.params;
         const entreprise = await pool.query("SELECT * FROM entreprise WHERE entreprise_id = $1", [id]);
@@ -43,18 +44,18 @@ const getEntreprise = (async (req, res) => {
 
 
 
-// ! GET PROFILE
-const getProfileEntreprise = (async (req, res) => {
-    // on recupere le id du token
-    const { id } = req.entreprise
+// // ! GET PROFILE
+// const getProfileEntreprise = (async (req, res) => {
+//     // on recupere le id du token
+//     const { id } = req.entreprise
 
-    try {
-        const allEntreprise = await pool.query("SELECT * FROM entreprise where entreprise_id=$1", [id]);
-        res.json(allEntreprise.rows);
-    } catch (err) {
-        res.status(400).send(err.message)
-    }
-})
+//     try {
+//         const allEntreprise = await pool.query("SELECT * FROM entreprise where entreprise_id=$1", [id]);
+//         res.json(allEntreprise.rows);
+//     } catch (err) {
+//         res.status(400).send(err.message)
+//     }
+// })
 
 
 
@@ -123,13 +124,16 @@ const updateEntreprise = (async (req, res) => {
 
     // console.log(req.params);
     // const { id } = req.entreprise
-    let { id } = req.params
+    console.log('ok')
+    const { id } = req.entreprise
+    
     try {
         // L'id passé en parametre dans l'url sur postman
         // const { id } = req.params;
-
-        let { civilite, nom, prenom, telephone, rue, cp, ville, email, mdp, role, siret, raison_sociale, code_ape } = req.body;
-
+        
+        let { civilite, nom, prenom, telephone, rue, cp, ville, email, mdp, role, siret, raison_sociale, code_ape } = req.body.formulaire;
+        
+        console.log(req.body.formulaire)
         //! validate mail
         if (!isEmail(email)) {
             res.status(400).send('email invalid')
@@ -235,7 +239,7 @@ const loginEntreprise = async (req, res) => {
 
 
 // ! GET PROFILE
-const getProfile = (async (req, res) => {
+const getProfileEntreprise = (async (req, res) => {
     const { id } = req.entreprise
 
     try {
