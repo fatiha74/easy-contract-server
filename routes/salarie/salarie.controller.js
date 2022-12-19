@@ -34,7 +34,7 @@ const getSalarie = (async (req, res) => {
 })
 
 // !CREATE
-const createSalarie = (async (req, res) => {
+const registerSalarie = (async (req, res) => {
     try {
 
         // on recupere les valeurs du formulaire
@@ -90,7 +90,7 @@ const createSalarie = (async (req, res) => {
             }
         )
 
-        res.json({ ...newSalarie, token })
+        res.json({ ...Salarie, token })
 
         console.log(req.body)
     } catch (err) {
@@ -100,48 +100,48 @@ const createSalarie = (async (req, res) => {
 })
 
 // !UPDATE
+
 const updateSalarie = (async (req, res) => {
 
- 
-
-
+    console.log("UPDATE µµµµµµµµµµµµµµµµµµµµµµµµµµµ")
     try {
 
         // on recupere l'id de la personne connecté grace au token
         const { id } = req.salarie;
-
-
         //on sélectionne le salarié qui correspond à l'id
         let salarie = await pool.query(
             `SELECT * 
             FROM salarie 
             WHERE salarie_id=$1`, [id])
-
-        salarie = salarie.rows[0]
-        
-        
-        if (!salarie) {
-            res.status(400).send("l'utilisateur n'existe pas")
-            return false
-        }
-
-
-        // 
-        for (const key in req.body) {
             
-                req.body[key] = salarie[key]|| req.body[key] ;
+            salarie = salarie.rows[0]
             
-        }
+            
+            if (!salarie) {
+                res.status(400).send("l'utilisateur n'existe pas")
+                return false
+            }
+            
+            
+            // 
+            for (const key in req.body) {
+                
+                req.body[key] = req.body[key]|| salarie[key]  ;
+                
+            }
+            
+         console.log("id salarie",req.body)
 
-      
         // on recupere la requete
-        let { civilite,
+        let { 
+            civilite,
             nom, prenom, telephone,
             rue, cp, ville,
             email, mdp, role,
             nom_jeune_fille, num_ss,
             date_naissance, lieu_naissance,
-            pays_naissance } = salarie;
+            pays_naissance 
+        } = salarie;
 
         //! validate mail
         if (!isEmail(email)) {
@@ -168,7 +168,7 @@ const updateSalarie = (async (req, res) => {
         // [description, id] == [argument 1 $1, argument 2 $2]
         let updateSalarie = await pool.query(
 
-        `UPDATE salarie SET
+            `UPDATE salarie SET
         civilite=$1,nom = $2, prenom = $3, 
         telephone=$4,rue = $5, cp = $6,ville=$7,
         email=$8, mdp= $9, role=$10,nom_jeune_fille=$11,
@@ -182,6 +182,7 @@ const updateSalarie = (async (req, res) => {
                 role, nom_jeune_fille,
                 num_ss, date_naissance,
                 lieu_naissance, pays_naissance, id]);
+                console.log(updateSalarie)
         res.json(updateSalarie)
     }
     catch (err) {
@@ -196,7 +197,9 @@ const deleteSalarie = (async (req, res) => {
     try {
         // je recupere le parametre id passer dans l'url
         const { id } = req.params;
-        const deleteSalarie = await pool.query("DELETE FROM salarie WHERE salarie_id = $1", [id]);
+        const deleteSalarie = await pool.query(
+            `DELETE FROM salarie 
+            WHERE salarie_id = $1`, [id]);
         res.json("le salarie est supprimé!")
 
     } catch (err) {
@@ -209,6 +212,7 @@ const deleteSalarie = (async (req, res) => {
 // exports.loginEntreprise = async (req, res) => {
 const loginSalarie = async (req, res) => {
     try {
+        
         console.log('ok')
         let {
             email,
@@ -216,7 +220,7 @@ const loginSalarie = async (req, res) => {
         } = req.body; // = const description = req.body.description
 
 
-       
+
         //validate mail
         if (!isEmail(email)) {
             console('')
@@ -228,9 +232,13 @@ const loginSalarie = async (req, res) => {
 
         //vérifier si l'utilisateur existe
 
-        let salarie = await pool.query("SELECT * FROM salarie WHERE email=$1", [email]);
+        let salarie = await pool.query(`
+        SELECT * 
+        FROM salarie 
+        WHERE email=$1`, 
+        [email]);
 
-console.log(salarie)
+        console.log(salarie)
         salarie = salarie.rows[0]
 
         if (!salarie) {
@@ -251,8 +259,8 @@ console.log(salarie)
         let id = salarie.salarie_id
 
 
-        //!create the token
-        const token_s = jwt.sign(
+        //! ON CREE LE TOKENC
+        const token = jwt.sign(
             {
                 email, mdp, id
             },
@@ -262,7 +270,7 @@ console.log(salarie)
             }
         )
 
-        res.json({ ...salarie, token_s })
+        res.json({ ...salarie, token })
 
     } catch (err) {
         console.log("------------------------------------------");
@@ -276,10 +284,15 @@ console.log(salarie)
 
 // ! GET PROFILE
 const getProfile = (async (req, res) => {
-    const { id } = req.salarie
-    console.log()
+
+
     try {
-        const allSalarie = await pool.query("SELECT * FROM salarie where salarie_id=$1", [id]);
+        const { id } = req.salarie
+console.log(id)
+        const allSalarie = await pool.query(
+         `SELECT * 
+        FROM salarie 
+        WHERE salarie_id=$1`, [id]);
         res.json(allSalarie.rows);
     } catch (err) {
         console.error(err.message)
@@ -291,7 +304,7 @@ const getProfile = (async (req, res) => {
 module.exports = {
     getAllSalarie,
     getSalarie,
-    createSalarie,
+    registerSalarie,
     updateSalarie,
     deleteSalarie,
     loginSalarie,
