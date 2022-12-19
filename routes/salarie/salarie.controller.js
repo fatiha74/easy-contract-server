@@ -42,7 +42,7 @@ const registerSalarie = (async (req, res) => {
             rue, ville, cp, telephone,
             email, mdp, nom_jeune_fille,
             num_ss, date_naissance, lieu_naissance,
-            pays_naissance, role } = req.body;
+            pays_naissance } = req.body;
         // la valeur dans values $1 recupere la description que l'on a ecrit sur postman
         // RETURNING * retourne à chaque fois la data ici description que l'on peut voir sur postman
 
@@ -65,13 +65,12 @@ const registerSalarie = (async (req, res) => {
         rue,ville,cp,telephone,
         email,mdp,nom_jeune_fille,
         num_ss,date_naissance,
-        lieu_naissance,pays_naissance,
-        role) VALUES($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14,$15) RETURNING * `,
+        lieu_naissance,pays_naissance) VALUES($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14) RETURNING * `,
             [civilite, nom, prenom, rue,
                 ville, cp, telephone, email,
                 mdp, nom_jeune_fille, num_ss,
                 date_naissance, lieu_naissance,
-                pays_naissance, role]);
+                pays_naissance]);
 
         // * recuperer le id de l'entreprise qui vient d'etre cree
         salarie = newSalarie.rows[0]
@@ -90,7 +89,8 @@ const registerSalarie = (async (req, res) => {
             }
         )
 
-        res.json({ ...Salarie, token })
+        console.log("token",token)
+        res.json({ ...newSalarie, token })
 
         console.log(req.body)
     } catch (err) {
@@ -124,23 +124,24 @@ const updateSalarie = (async (req, res) => {
             
             
             // 
-            for (const key in req.body) {
+
+            console.log("le formulaire",req.body.formulaire)
+            
+            for (const key in req.body.formulaire) {
                 
-                req.body[key] = req.body[key]|| salarie[key]  ;
+                req.body.formulaire[key] = req.body.formulaire[key]|| salarie[key]  ;
                 
             }
             
-         console.log("id salarie",req.body)
+       
 
         // on recupere la requete
         let { 
             civilite,
             nom, prenom, telephone,
             rue, cp, ville,
-            email, mdp, role,
-            nom_jeune_fille, num_ss,
-            date_naissance, lieu_naissance,
-            pays_naissance 
+            email, mdp, 
+            nom_jeune_fille, num_ss
         } = salarie;
 
         //! validate mail
@@ -156,7 +157,9 @@ const updateSalarie = (async (req, res) => {
 
         let verifExist = await pool.query(
             `SELECT * 
-        FROM salarie WHERE email=$1 AND salarie_id <> $2 `, [email, id]);
+        FROM salarie 
+        WHERE email=$1 
+        AND salarie_id <> $2 `, [email, id]);
         console.log(email)
 
         if (verifExist.rowCount !== 0) {
@@ -170,18 +173,16 @@ const updateSalarie = (async (req, res) => {
 
             `UPDATE salarie SET
         civilite=$1,nom = $2, prenom = $3, 
-        telephone=$4,rue = $5, cp = $6,ville=$7,
-        email=$8, mdp= $9, role=$10,nom_jeune_fille=$11,
-        num_ss=$12,date_naissance=$13,
-        lieu_naissance=$14,pays_naissance=$15
-        WHERE salarie_id = $16`,
+        telephone=$4,rue = $5, cp = $6,
+        ville=$7,email=$8, mdp= $9,nom_jeune_fille=$10,
+        num_ss=$11
+      
+        WHERE salarie_id = $12`,
 
             [civilite, nom, prenom,
                 telephone, rue, cp,
-                ville, email, mdp,
-                role, nom_jeune_fille,
-                num_ss, date_naissance,
-                lieu_naissance, pays_naissance, id]);
+                ville, email, mdp, nom_jeune_fille,
+                num_ss, id]);
                 console.log(updateSalarie)
         res.json(updateSalarie)
     }
