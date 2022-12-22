@@ -1,9 +1,16 @@
 const express = require('express');
 const entrepriseRouter = express.Router();
-const { createEntreprise, getAllEntreprise, getEntreprise, updateEntreprise, deleteEntreprise, loginEntreprise, getProfileEntreprise } = require('./entreprise.controller')
-const verifyToken = require('../../middleware/auth_middleware')
-
-
+const { createEntreprise, 
+    getAllEntreprise, 
+    getEntreprise,
+     updateEntreprise,
+      deleteEntreprise, 
+      loginEntreprise,
+       getProfileEntreprise} = require('./entreprise.controller')
+const verifyToken = require('../../middleware/auth_middleware');
+const { getAllSalarie } = require('../salarie/salarie.controller');
+const { getOneSalarie } = require('../salarie/salarie.controller');
+const {createContrat} =require('../contrat/contrat.controller');
 entrepriseRouter
     // * create entreprise      
     .post('/', createEntreprise)
@@ -21,6 +28,14 @@ entrepriseRouter
 
     // * read tous les entreprises
     .get('/', getAllEntreprise)
+
+    //* pour le contrat
+    .get('/addcontrat', getAllSalarie)
+
+    .post('/addcontrat', createContrat)
+
+// * pour un salarie choisie pour le contrat
+    .get('/addcontrat/:id', getOneSalarie)
 
     // // *read un entreprise
     // .get('/:id',getEntreprise)

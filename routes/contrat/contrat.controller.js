@@ -27,19 +27,48 @@ const getContrat = (async (req, res) => {
 // !CREATE
 const createContrat = (async (req, res) => {
     try {
+        const fki_entreprise = req.entreprise.id
+
 
         // on recupere la valeur de l'attribut
-        const { fki_entreprise,fki_salarie,type_contrat,is_fulltime,date_debut,date_fin,periode_essai,motif,fonction,statut} = req.body;
+        const { fki_salarie, type_contrat, is_fulltime, date_debut, date_fin, periode_essai, motif, fonction, statut, remuneration } = req.body;
+
+        console.log("hello", req.body)
         // la valeur dans values $1 recupere la description que l'on a ecrit sur postman
         // RETURNING * retourne à chaque fois la data ici description que l'on peut voir sur postman
         const newContrat = await pool.query(
-            "INSERT INTO Contrat (fki_entreprise,fki_salarie,type_contrat,is_fulltime,date_debut,date_fin,periode_essai,motif,fonction,statut) VALUES($1,$2,$3,$4,$5,$6,$7,$8,$9,$10) RETURNING * ", [fki_entreprise,fki_salarie,type_contrat,is_fulltime,date_debut,date_fin,periode_essai,motif,fonction,statut]);
+            `
+            INSERT INTO Contrat 
+            (fki_entreprise,
+                fki_salarie,
+                type_contrat,
+                is_fulltime,
+                date_debut,
+                date_fin,
+                periode_essai,
+                motif,
+                fonction,
+                statut,
+                remuneration) 
+                VALUES($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11) RETURNING * `,
+            [fki_entreprise,
+                fki_salarie,
+                type_contrat,
+                is_fulltime,
+                date_debut,
+                date_fin,
+                periode_essai,
+                motif,
+                fonction,
+                statut,
+                remuneration]);
         res.json(newContrat.rows[0])
         console.log(req.body)
     } catch (err) {
         console.error(err.message)
+        res.status(400).send("Server error")
     }
-    
+
 })
 
 // !UPDATE
@@ -51,10 +80,10 @@ const updateContrat = (async (req, res) => {
         // L'id passé en parametre dans l'url sur postman
 
         const { id } = req.params;
-        const { entreprise_id,salarie_id,type_contrat,is_fulltime,date_debut,periode_fin_essai,motif_recrutement,fonction,statut } = req.body;
+        const { entreprise_id, salarie_id, type_contrat, is_fulltime, date_debut, periode_fin_essai, motif_recrutement, fonction, statut } = req.body;
 
         // [description, id] == [argument 1 $1, argument 2 $2]
-        const updateContrat = await pool.query("UPDATE contrat SET entreprise_id = $1, salarie_id = $2, type_contrat = $3,is_fulltime=$4,date_debut = $5, date_fin_essai = $6,motif=$7,recrutement= $8,fonction=$9, statut= $10,  WHERE contrat_id = $11", [entreprise_id,salarie_id,type_contrat,is_fulltime,date_debut,periode_fin_essai,motif_recrutement,fonction,statut, id]);
+        const updateContrat = await pool.query("UPDATE contrat SET entreprise_id = $1, salarie_id = $2, type_contrat = $3,is_fulltime=$4,date_debut = $5, date_fin_essai = $6,motif=$7,recrutement= $8,fonction=$9, statut= $10,  WHERE contrat_id = $11", [entreprise_id, salarie_id, type_contrat, is_fulltime, date_debut, periode_fin_essai, motif_recrutement, fonction, statut, id]);
 
 
         res.json(updateContrat)

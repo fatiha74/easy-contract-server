@@ -44,21 +44,6 @@ const getEntreprise = (async (req, res) => {
 
 
 
-// // ! GET PROFILE
-// const getProfileEntreprise = (async (req, res) => {
-//     // on recupere le id du token
-//     const { id } = req.entreprise
-
-//     try {
-//         const allEntreprise = await pool.query("SELECT * FROM entreprise where entreprise_id=$1", [id]);
-//         res.json(allEntreprise.rows);
-//     } catch (err) {
-//         res.status(400).send(err.message)
-//     }
-// })
-
-
-
 
 // !CREATE
 const createEntreprise = (async (req, res) => {
@@ -199,7 +184,11 @@ const loginEntreprise = async (req, res) => {
 
         //vérifier si l'utilisateur existe
 
-        let entreprise = await pool.query("SELECT * FROM entreprise WHERE email=$1", [email]);
+        let entreprise = await pool.query(`
+        SELECT * 
+        FROM entreprise 
+        WHERE email=$1`
+        , [email]);
 
         entreprise = entreprise.rows[0]
         let id = entreprise.entreprise_id
@@ -243,8 +232,11 @@ const getProfileEntreprise = (async (req, res) => {
     const { id } = req.entreprise
 
     try {
-        const allEntreprise = await pool.query("SELECT * FROM entreprise where entreprise_id=$1", [id]);
-        res.json(allEntreprise.rows);
+        const allEntreprise = await pool.query(`
+        SELECT * 
+        FROM entreprise 
+        where entreprise_id=$1`, [id]);
+        res.json(allEntreprise.rows[0]);
     } catch (err) {
         res.status(400).send(err.message)
     }
@@ -262,4 +254,5 @@ module.exports = {
     deleteEntreprise,
     loginEntreprise,
     getProfileEntreprise
+    
 }

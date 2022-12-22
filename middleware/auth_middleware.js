@@ -21,6 +21,7 @@ function verifyToken(req, res, next){
         const decoded = jwt.verify(token, SECRET);
         // pour acceder au payload
         req.entreprise = decoded;
+        
         req.salarie = decoded;
 
     } catch (err) {

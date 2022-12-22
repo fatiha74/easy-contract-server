@@ -1,6 +1,6 @@
 const express = require('express');
 const salarieRouter = express.Router();
-const {registerSalarie,getAllSalarie,getSalarie,updateSalarie,deleteSalarie,loginSalarie,getProfile} = require('./salarie.controller')
+const {registerSalarie,getAllSalarie,getOneSalarie,updateSalarie,deleteSalarie,loginSalarie,getProfile} = require('./salarie.controller')
 const verifyToken = require('../../middleware/auth_middleware')
 
 
@@ -23,7 +23,7 @@ salarieRouter
 .get('/profile',getProfile)
 
 // *read un salarie
-.get('/:id',getSalarie)
+.get('/:id',getOneSalarie)
 
 // * update salarie
 // .put('/:id',updateSalarie)

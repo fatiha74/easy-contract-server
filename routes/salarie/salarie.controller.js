@@ -19,9 +19,10 @@ const getAllSalarie = (async (req, res) => {
 
 
 // ! GET un salarie
-const getSalarie = (async (req, res) => {
+const getOneSalarie = (async (req, res) => {
 
     try {
+        console.log('dans get one *******************')
         // L'id passé en parametre dans l'url sur postman
         const { id } = req.params;
         const salarie = await pool.query("SELECT * FROM salarie WHERE salarie_id = $1", [id]);
@@ -304,7 +305,7 @@ console.log(id)
 
 module.exports = {
     getAllSalarie,
-    getSalarie,
+    getOneSalarie,
     registerSalarie,
     updateSalarie,
     deleteSalarie,
