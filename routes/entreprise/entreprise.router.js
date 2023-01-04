@@ -10,7 +10,7 @@ const { createEntreprise,
 const verifyToken = require('../../middleware/auth_middleware');
 const { getAllSalarie } = require('../salarie/salarie.controller');
 const { getOneSalarie } = require('../salarie/salarie.controller');
-const {createContrat} =require('../contrat/contrat.controller');
+const {createContrat,getContratCree} =require('../contrat/contrat.controller');
 entrepriseRouter
     // * create entreprise      
     .post('/', createEntreprise)
@@ -31,11 +31,13 @@ entrepriseRouter
 
     //* pour le contrat
     .get('/addcontrat', getAllSalarie)
-
     .post('/addcontrat', createContrat)
+    .get('/addcontrat/:id',getContratCree)
 
+
+    
 // * pour un salarie choisie pour le contrat
-    .get('/addcontrat/:id', getOneSalarie)
+    .get('/salarie/:id', getOneSalarie)
 
     // // *read un entreprise
     // .get('/:id',getEntreprise)

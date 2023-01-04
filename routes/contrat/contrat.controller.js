@@ -8,25 +8,82 @@ const getAllContrat = (async (req, res) => {
         res.json(allContrat.rows);
     } catch (err) {
         console.error(err.message)
+        res.status(400).send("Server error")
     }
 })
 
 // ! GET un contrat
 const getContrat = (async (req, res) => {
     try {
-        // L'id passé en parametre dans l'url sur postman
+        // L'id passé en parametre
         const { id } = req.params;
         const contrat = await pool.query("SELECT * FROM contrat WHERE contrat_id = $1", [id]);
         res.json(contrat.rows[0]);
         console.log(req.params)
     } catch (err) {
         console.error(err.message)
+        res.status(400).send("Server error")
+    }
+})
+
+const getContratCree = (async (req, res) => {
+    try {
+        // L'id passé en parametre
+        console.log('**************dans getContratCree****************')
+        const { id } = req.params;
+        const contrat = await pool.query(
+        `SELECT
+        contrat.*, 
+        entreprise.entreprise_id, 
+        entreprise.siret, 
+        entreprise.raison_sociale, 
+        entreprise.code_ape, 
+        entreprise.ville as ville_entreprise, 
+        entreprise.cp as cp_entreprise, 
+        entreprise.rue as rue_entreprise, 
+        entreprise.telephone, 
+        entreprise.prenom as prenom_entreprise, 
+        entreprise.nom as nom_entreprise, 
+        entreprise.civilite as civilite_entreprise, 
+        salarie.pays_naissance, 
+        salarie.lieu_naissance, 
+        salarie.date_naissance, 
+        salarie.num_ss, 
+        salarie.nom_jeune_fille, 
+        salarie.salarie_id, 
+        salarie.mdp, 
+        salarie.email, 
+        salarie.ville, 
+        salarie.cp, 
+        salarie.rue, 
+        salarie.telephone, 
+        salarie.prenom, 
+        salarie.nom, 
+        salarie.civilite
+    FROM
+        contrat
+        INNER JOIN
+        salarie
+        ON 
+            contrat.fki_salarie = salarie.salarie_id
+        INNER JOIN
+        entreprise
+        ON 
+            contrat.fki_entreprise = entreprise.entreprise_id
+    WHERE
+        contrat.contrat_id = $1`, [id]);
+        res.json(contrat.rows[0]);
+        console.log(req.params)
+    } catch (err) {
+        console.error(err.message)
+        res.status(400).send("Server error")
     }
 })
 
 // !CREATE
 const createContrat = (async (req, res) => {
     try {
+        // id du token
         const fki_entreprise = req.entreprise.id
 
 
@@ -89,6 +146,8 @@ const updateContrat = (async (req, res) => {
         res.json(updateContrat)
     } catch (err) {
         console.error(err.message)
+        res.status(400).send("Server error")
+        
     }
 
 })
@@ -103,6 +162,7 @@ const deleteContrat = (async (req, res) => {
 
     } catch (err) {
         console.error(err.message)
+        res.status(400).send("Server error")
     }
     res.send('delete')
 })
@@ -114,5 +174,7 @@ module.exports = {
     getContrat,
     createContrat,
     updateContrat,
-    deleteContrat
+    deleteContrat,
+getContratCree
+    
 }

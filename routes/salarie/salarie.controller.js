@@ -14,6 +14,7 @@ const getAllSalarie = (async (req, res) => {
         res.json(allSalarie.rows);
     } catch (err) {
         console.error(err.message)
+        res.status(400).send("Server error")
     }
 })
 
@@ -30,6 +31,7 @@ const getOneSalarie = (async (req, res) => {
         console.log(req.params)
     } catch (err) {
         console.error(err.message)
+        res.status(400).send("Server error")
     }
 
 })
@@ -90,12 +92,13 @@ const registerSalarie = (async (req, res) => {
             }
         )
 
-        console.log("token",token)
+        console.log("token", token)
         res.json({ ...newSalarie, token })
 
         console.log(req.body)
     } catch (err) {
         console.error(err.message)
+        res.status(400).send("Server error")
     }
 
 })
@@ -104,44 +107,44 @@ const registerSalarie = (async (req, res) => {
 
 const updateSalarie = (async (req, res) => {
 
-    console.log("UPDATE µµµµµµµµµµµµµµµµµµµµµµµµµµµ")
+    
     try {
 
-        // on recupere l'id de la personne connecté grace au token
+        // id du token
         const { id } = req.salarie;
         //on sélectionne le salarié qui correspond à l'id
         let salarie = await pool.query(
             `SELECT * 
             FROM salarie 
             WHERE salarie_id=$1`, [id])
-            
-            salarie = salarie.rows[0]
-            
-            
-            if (!salarie) {
-                res.status(400).send("l'utilisateur n'existe pas")
-                return false
-            }
-            
-            
-            // 
 
-            console.log("le formulaire",req.body.formulaire)
-            
-            for (const key in req.body.formulaire) {
-                
-                req.body.formulaire[key] = req.body.formulaire[key]|| salarie[key]  ;
-                
-            }
-            
-       
+        salarie = salarie.rows[0]
+
+
+        if (!salarie) {
+            res.status(400).send("l'utilisateur n'existe pas")
+            return false
+        }
+
+
+        // 
+
+        console.log("le formulaire", req.body.formulaire)
+
+        for (const key in req.body.formulaire) {
+
+            req.body.formulaire[key] = req.body.formulaire[key] || salarie[key];
+
+        }
+
+
 
         // on recupere la requete
-        let { 
+        let {
             civilite,
             nom, prenom, telephone,
             rue, cp, ville,
-            email, mdp, 
+            email, mdp,
             nom_jeune_fille, num_ss
         } = salarie;
 
@@ -184,7 +187,7 @@ const updateSalarie = (async (req, res) => {
                 telephone, rue, cp,
                 ville, email, mdp, nom_jeune_fille,
                 num_ss, id]);
-                console.log(updateSalarie)
+        console.log(updateSalarie)
         res.json(updateSalarie)
     }
     catch (err) {
@@ -211,17 +214,13 @@ const deleteSalarie = (async (req, res) => {
 })
 
 // ! LOGIN
-// exports.loginEntreprise = async (req, res) => {
+
 const loginSalarie = async (req, res) => {
     try {
-        
-        console.log('ok')
         let {
             email,
             mdp
         } = req.body; // = const description = req.body.description
-
-
 
         //validate mail
         if (!isEmail(email)) {
@@ -233,14 +232,12 @@ const loginSalarie = async (req, res) => {
         mdp = hashPassword(mdp)
 
         //vérifier si l'utilisateur existe
-
         let salarie = await pool.query(`
         SELECT * 
         FROM salarie 
-        WHERE email=$1`, 
-        [email]);
+        WHERE email=$1`,
+            [email]);
 
-        console.log(salarie)
         salarie = salarie.rows[0]
 
         if (!salarie) {
@@ -287,12 +284,12 @@ const loginSalarie = async (req, res) => {
 // ! GET PROFILE
 const getProfile = (async (req, res) => {
 
-
     try {
+        // id token
         const { id } = req.salarie
-console.log(id)
+
         const allSalarie = await pool.query(
-         `SELECT * 
+            `SELECT * 
         FROM salarie 
         WHERE salarie_id=$1`, [id]);
         res.json(allSalarie.rows);
