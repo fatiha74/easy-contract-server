@@ -6,7 +6,9 @@ const pool = new Pool({
     password: process.env.BDD_password,
     host: "localhost",
     port: process.env.PORT,
-    database: "ec"
+    database: "ec",
+    // pour render
+    // ssl:true
 });
 
 module.exports = pool;

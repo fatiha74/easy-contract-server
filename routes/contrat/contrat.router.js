@@ -8,7 +8,8 @@ const {
     createContrat ,
     updateContrat,
     deleteContrat,
-    getContratCree
+    getContratCree,
+    getContratEnCours
 } = require('./contrat.controller.js')
 
 
@@ -16,6 +17,7 @@ const {
 contratRouter.route('/contrat')
     .get(getAllContrat)
     .post(createContrat)
+    .get(getContratEnCours)
 
 
 contratRouter.route('/contrat/:id')
