@@ -2,6 +2,7 @@ const express = require('express');
 const entrepriseRouter = express.Router();
 const { createEntreprise,
     getAllEntreprise,
+    test,
     getEntreprise,
     updateEntreprise,
     deleteEntreprise,
@@ -21,7 +22,7 @@ entrepriseRouter
     // * login entreprise       
     .post('/login', loginEntreprise)
 
-
+.get('/test',test)
 
     // ! on verifie le token  à chaque fois pour toutes les actions suivantes
     .use(verifyToken)

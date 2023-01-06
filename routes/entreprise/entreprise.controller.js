@@ -4,7 +4,14 @@ const jwt = require('jsonwebtoken')
 const SECRET = require('../../config')
 const hashPassword = require('../../middleware/hash_password.js');
 
-
+const test = (async (req, res) => {
+    try {
+        res.json({ 'nom' : 'ok'})
+    }
+    catch (err){
+        console.error(err.message)
+    }
+})
 
 // const loginRouter = express.Router();
 
@@ -15,7 +22,8 @@ const getAllEntreprise = (async (req, res) => {
         console.log(allEntreprise)
         res.json(allEntreprise.rows);
     } catch (err) {
-        console.error(err.message)
+        
+        res.status(400).send(err.message)
     }
 })
 
@@ -304,6 +312,7 @@ module.exports = {
     deleteEntreprise,
     loginEntreprise,
     getProfileEntreprise,
-    getAllMySalaries
+    getAllMySalaries,
+    test
 
 }
