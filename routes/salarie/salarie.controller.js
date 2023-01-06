@@ -3,7 +3,7 @@ const pool = require('../../db.js')
 const hashPassword = require('../../middleware/hash_password.js');
 
 const jwt = require('jsonwebtoken')
-const SECRET = require('../../middleware/config.js')
+const SECRET = require('../../middleware/config')
 
 const isEmail = require('validator/lib/isEmail')
 
