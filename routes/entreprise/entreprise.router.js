@@ -13,8 +13,7 @@ const { getAllSalarie } = require('../salarie/salarie.controller');
 const { getOneSalarie } = require('../salarie/salarie.controller');
 const { createContrat, getContratCree, getAllMyContratEntreprise, getContratEnCours } = require('../contrat/contrat.controller');
 entrepriseRouter
-    // * create entreprise      
-    .post('/', createEntreprise)
+  
 
     // * create entreprise      
     .post('/registerEntreprise', createEntreprise)

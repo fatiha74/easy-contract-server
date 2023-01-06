@@ -8,7 +8,7 @@ const pool = new Pool({
     port: process.env.PORT,
     database: "ec",
     // pour render
-    // ssl:true
+    ssl:true
 });
 
 module.exports = pool;
