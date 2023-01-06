@@ -1,17 +1,17 @@
 const express = require('express');
 const entrepriseRouter = express.Router();
-const { createEntreprise, 
-    getAllEntreprise, 
+const { createEntreprise,
+    getAllEntreprise,
     getEntreprise,
-     updateEntreprise,
-      deleteEntreprise, 
-      loginEntreprise,
-       getProfileEntreprise,
-       getAllMySalaries} = require('./entreprise.controller')
+    updateEntreprise,
+    deleteEntreprise,
+    loginEntreprise,
+    getProfileEntreprise,
+    getAllMySalaries } = require('./entreprise.controller')
 const verifyToken = require('../../middleware/auth_middleware');
 const { getAllSalarie } = require('../salarie/salarie.controller');
 const { getOneSalarie } = require('../salarie/salarie.controller');
-const {createContrat,getContratCree,getAllMyContratEntreprise, getContratEnCours} =require('../contrat/contrat.controller');
+const { createContrat, getContratCree, getAllMyContratEntreprise, getContratEnCours } = require('../contrat/contrat.controller');
 entrepriseRouter
     // * create entreprise      
     .post('/', createEntreprise)
@@ -33,13 +33,13 @@ entrepriseRouter
     //* pour le contrat
     .get('/addcontrat', getAllSalarie)
     .post('/addcontrat', createContrat)
-    .get('/addcontrat/:id',getContratCree)
-    .get('/mesContrats',getAllMyContratEntreprise)
-    .get('/contratsEncours',getContratEnCours)
+    .get('/addcontrat/:id', getContratCree)
+    .get('/mesContrats', getAllMyContratEntreprise)
+    .get('/contratsEncours', getContratEnCours)
 
 
-    
-// * pour un salarie choisie pour le contrat
+
+    // * pour un salarie choisie pour le contrat
     .get('/salarie/:id', getOneSalarie)
     // * la liste de mes salariés 
     .get('/mesSalaries', getAllMySalaries)
