@@ -3,7 +3,7 @@ const pool = require('../../db.js')
 const hashPassword = require('../../middleware/hash_password.js');
 
 const jwt = require('jsonwebtoken')
-const SECRET = require('../../middleware/config')
+const SECRET = require('../../middleware/config').default
 
 const isEmail = require('validator/lib/isEmail')
 
@@ -107,7 +107,7 @@ const registerSalarie = (async (req, res) => {
 
 const updateSalarie = (async (req, res) => {
 
-    
+
     try {
 
         // id du token

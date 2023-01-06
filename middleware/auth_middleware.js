@@ -1,5 +1,5 @@
-const SECRET = require('../middleware/config');
-const jwt =require("jsonwebtoken");
+const SECRET = require('../middleware/config').default;
+const jwt = require("jsonwebtoken");
 
 
 /**
@@ -9,7 +9,7 @@ const jwt =require("jsonwebtoken");
  * @param next
  * @return {*}
  */
-function verifyToken(req, res, next){
+function verifyToken(req, res, next) {
     let token = req.headers["authorization"];
 
     if (!token) {
@@ -21,7 +21,7 @@ function verifyToken(req, res, next){
         const decoded = jwt.verify(token, SECRET);
         // pour acceder au payload
         req.entreprise = decoded;
-        
+
         req.salarie = decoded;
 
     } catch (err) {
