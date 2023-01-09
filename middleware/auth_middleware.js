@@ -1,4 +1,4 @@
-const SECRET = require('../config').default;
+const SECRET = require('../config');
 const jwt = require("jsonwebtoken");
 
 
@@ -18,6 +18,7 @@ function verifyToken(req, res, next) {
 
 
     try {
+        console.log(SECRET);
         const decoded = jwt.verify(token, SECRET);
         // pour acceder au payload
         req.entreprise = decoded;
@@ -25,7 +26,7 @@ function verifyToken(req, res, next) {
         req.salarie = decoded;
 
     } catch (err) {
-        return res.status(401).send("Unauthorized");
+        return res.status(401).json(err);
     }
     return next();
 }
