@@ -17,7 +17,7 @@ entrepriseRouter
   
 
     // * create entreprise      
-    .post('/registerEntreprise', createEntreprise)
+    .post('/registerentreprise', createEntreprise)
 
     // * login entreprise       
     .post('/login', loginEntreprise)
@@ -34,15 +34,15 @@ entrepriseRouter
     .get('/addcontrat', getAllSalarie)
     .post('/addcontrat', createContrat)
     .get('/addcontrat/:id', getContratCree)
-    .get('/mesContrats', getAllMyContratEntreprise)
-    .get('/contratsEncours', getContratEnCours)
+    .get('/mescontrats', getAllMyContratEntreprise)
+    .get('/contratsencours', getContratEnCours)
 
 
 
     // * pour un salarie choisie pour le contrat
     .get('/salarie/:id', getOneSalarie)
     // * la liste de mes salariés 
-    .get('/mesSalaries', getAllMySalaries)
+    .get('/messalaries', getAllMySalaries)
 
     // // *read un entreprise
     // .get('/:id',getEntreprise)
