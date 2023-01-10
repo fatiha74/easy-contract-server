@@ -1,4 +1,4 @@
-const SECRET = require('../config');
+const SECRET = process.env.SECRET;
 const jwt = require("jsonwebtoken");
 
 
