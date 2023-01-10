@@ -1,5 +1,5 @@
 const Pool = require("pg").Pool;
-require('dotenv').config();
+// require('dotenv').config();
 
 const pool = new Pool({
     user: "fatiha",
@@ -10,7 +10,7 @@ const pool = new Pool({
 
     // port: process.env.PORT,
     port:5432,
-    database: "dpg-ceqp8u02i3mov0ikm0eg-a",
+    database: "ec",
     // pour render
     ssl: true
 });
