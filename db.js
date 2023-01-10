@@ -8,7 +8,7 @@ const pool = new Pool({
     host: "dpg-ceqp8u02i3mov0ikm0eg-a.frankfurt-postgres.render.com",
   
      port: process.env.PORT,
-    database: "ec",
+    database: "easyc",
     // pour render
      ssl:true
 });
