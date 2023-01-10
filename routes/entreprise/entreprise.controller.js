@@ -20,21 +20,22 @@ const test = (async (req, res) => {
 const loginEntreprise = async (req, res) => {
     console.log("login")
     // console.log(req)
+    console.log(1);
     try {
-
+        console.log(2);
         let {
             email,
             mdp
         } = req.body; // = const description = req.body.description
-
+        console.log(3);
         //validate mail
         if (!isEmail(email)) {
             res.status(400).send('email invalid')
         }
-
+        console.log(4);
         //!hash le password
         mdp = hashPassword(mdp)
-
+        console.log(1);
         //vérifier si l'utilisateur existe
 
         let entreprise = await pool.query(`
@@ -45,19 +46,19 @@ const loginEntreprise = async (req, res) => {
 
         entreprise = entreprise.rows[0]
         let id = entreprise.entreprise_id
-
+        console.log(5);
         if (!entreprise) {
             res.status(400).send('verifier vos identifiants')
             return false;
         }
-
+        console.log(1);
         //comparer les mdp
         if (mdp !== entreprise.mdp) {
             console.log(mdp)
             res.status(400).send('verifier vos identifiants')
             return false;
         }
-
+        console.log(6);
         //create the token
         const token = jwt.sign(
             {
@@ -70,7 +71,7 @@ const loginEntreprise = async (req, res) => {
         )
         // on envoit la reponse de la requete et le token
         res.json({ ...entreprise, token })
-
+        console.log(7);
     } catch (err) {
         console.log("------------------------------------------");
         console.log(err.message);
