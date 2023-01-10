@@ -10,7 +10,7 @@ const pool = new Pool({
 
     // port: process.env.PORT,
     port:5432,
-    database: "ec",
+    database: "easyc",
     // pour render
     ssl: true
 });
