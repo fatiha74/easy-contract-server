@@ -20,7 +20,7 @@ entrepriseRouter
     .post('/register', createEntreprise)
 
     // * login entreprise       
-    .post('/logined', loginEntreprise)
+    .post('/login', loginEntreprise)
 
     .get('/test', test)
 
