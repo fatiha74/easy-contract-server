@@ -1,14 +1,15 @@
 const pool = require('../../db.js');
 const isEmail = require('validator/lib/isEmail')
 const jwt = require('jsonwebtoken')
-const SECRET = require('../../config')
+// const SECRET = require('../../config')
+const SECRET = "ce3d96aeb39f40b999abd4f38b3bdcafa16e140a"
 const hashPassword = require('../../middleware/hash_password.js');
 
 const test = (async (req, res) => {
     try {
-        res.json({ 'nom' : 'ok'})
+        res.json({ 'nom': 'ok' })
     }
-    catch (err){
+    catch (err) {
         console.error(err.message)
     }
 })
@@ -22,7 +23,7 @@ const getAllEntreprise = (async (req, res) => {
         console.log(allEntreprise)
         res.json(allEntreprise.rows);
     } catch (err) {
-        
+
         res.status(400).send(err.message)
     }
 })
