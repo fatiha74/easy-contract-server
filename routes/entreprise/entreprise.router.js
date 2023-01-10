@@ -17,7 +17,7 @@ entrepriseRouter
   
 
     // * create entreprise      
-    .post('/registerentreprise', createEntreprise)
+    .post('/register', createEntreprise)
 
     // * login entreprise       
     .post('/login', loginEntreprise)
