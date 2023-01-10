@@ -1,3 +1,4 @@
+require("dotenv").config()
 const pool = require('../../db.js');
 const isEmail = require('validator/lib/isEmail')
 const jwt = require('jsonwebtoken')
