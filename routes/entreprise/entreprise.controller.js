@@ -17,68 +17,68 @@ const test = (async (req, res) => {
 
 // ! LOGIN
 // exports.loginEntreprise = async (req, res) => {
-    const loginEntreprise = async (req, res) => {
-        console.log("login")
-        console.log(req)
-        try {
-           
-            let {
-                email,
-                mdp
-            } = req.body; // = const description = req.body.description
-    
-            //validate mail
-            if (!isEmail(email)) {
-                res.status(400).send('email invalid')
-            }
-    
-            //!hash le password
-            mdp = hashPassword(mdp)
-    
-            //vérifier si l'utilisateur existe
-    
-            let entreprise = await pool.query(`
+const loginEntreprise = async (req, res) => {
+    console.log("login")
+    // console.log(req)
+    try {
+
+        let {
+            email,
+            mdp
+        } = req.body; // = const description = req.body.description
+
+        //validate mail
+        if (!isEmail(email)) {
+            res.status(400).send('email invalid')
+        }
+
+        //!hash le password
+        mdp = hashPassword(mdp)
+
+        //vérifier si l'utilisateur existe
+
+        let entreprise = await pool.query(`
             SELECT * 
             FROM entreprise 
             WHERE email=$1`
-                , [email]);
-    
-            entreprise = entreprise.rows[0]
-            let id = entreprise.entreprise_id
-    
-            if (!entreprise) {
-                res.status(400).send('verifier vos identifiants')
-                return false;
-            }
-    
-            //comparer les mdp
-            if (mdp !== entreprise.mdp) {
-                console.log(mdp)
-                res.status(400).send('verifier vos identifiants')
-                return false;
-            }
-    
-            //create the token
-            const token = jwt.sign(
-                {
-                    email, mdp, id
-                },
-                SECRET,
-                {
-                    expiresIn: "720h",
-                }
-            )
-            // on envoit la reponse de la requete et le token
-            res.json({ ...entreprise, token })
-    
-        } catch (err) {
-            console.log("------------------------------------------");
-            console.log(err.message);
-            res.status(400).send(err.message)
+            , [email]);
+
+        entreprise = entreprise.rows[0]
+        let id = entreprise.entreprise_id
+
+        if (!entreprise) {
+            res.status(400).send('verifier vos identifiants')
+            return false;
         }
+
+        //comparer les mdp
+        if (mdp !== entreprise.mdp) {
+            console.log(mdp)
+            res.status(400).send('verifier vos identifiants')
+            return false;
+        }
+
+        //create the token
+        const token = jwt.sign(
+            {
+                email, mdp, id
+            },
+            SECRET,
+            {
+                expiresIn: "720h",
+            }
+        )
+        // on envoit la reponse de la requete et le token
+        res.json({ ...entreprise, token })
+
+    } catch (err) {
+        console.log("------------------------------------------");
+        console.log(err.message);
+        res.status(400).send(err.message)
     }
-    
-    
+}
+
+
 // const loginRouter = express.Router();
 
 // ! GET all entreprise
