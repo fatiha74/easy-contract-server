@@ -226,8 +226,10 @@ const deleteEntreprise = (async (req, res) => {
 // ! LOGIN
 // exports.loginEntreprise = async (req, res) => {
 const loginEntreprise = async (req, res) => {
+    console.log("login")
+    console.log(req)
     try {
-        ;
+       
         let {
             email,
             mdp
