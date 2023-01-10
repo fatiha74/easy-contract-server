@@ -10,12 +10,11 @@ const jwt = require("jsonwebtoken");
  * @return {*}
  */
 function verifyToken(req, res, next) {
-    let token = req.headers["Authorization"];
+    let token = req.headers["authorization"];
 
     if (!token) {
         return res.status(403).send("Forbidden");
     }
-
 
     try {
         console.log(SECRET);
