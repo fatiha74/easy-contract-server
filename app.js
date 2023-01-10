@@ -11,15 +11,15 @@ const contratRouter = require('./routes/contrat/contrat.router.js');
 // middleware
 app.use(cors());
 app.use(express.json());
-app.use('/entreprise',entrepriseRouter)
-app.use('/salarie',salarieRouter)
-app.use('/contrat',contratRouter)
+app.use('/entreprise', entrepriseRouter)
+app.use('/salarie', salarieRouter)
+app.use('/contrat', contratRouter)
 
 
 // 
 const start = async () => {
     try {
-        app.listen(5000, console.log("Mon serveur fonctionne "))
+        app.listen(5000, console.log("Mon serveur fonctionne yes"))
     } catch (error) {
         console.log(error)
     }
