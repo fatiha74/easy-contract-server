@@ -215,7 +215,7 @@ const createEntreprise = (async (req, res) => {
             {
                 email, mdp, id
             },
-            SECRET,
+            process.env.SECRET,
             {
                 expiresIn: "720h",
             }
