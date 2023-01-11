@@ -269,7 +269,7 @@ const updateEntreprise = (async (req, res) => {
 
             let updatedEntreprise = await pool.query("SELECT * from entreprise where entreprise_id=$1",[id])
         console.log(updateEntreprise)
-        res.json(updatedEntreprise)
+        res.json(updatedEntreprise.rows[0])
     } catch (err) {
         res.status(400).send({ MESSAGE: err.message, erreur: "update" })
     }
