@@ -1,3 +1,4 @@
+require("dotenv").config()
 const pool = require('../../db.js')
 // const loginRouter = express.Router();
 const hashPassword = require('../../middleware/hash_password.js');
