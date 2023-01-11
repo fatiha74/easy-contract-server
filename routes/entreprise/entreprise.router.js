@@ -51,7 +51,7 @@ entrepriseRouter
 .get('/profile', getProfileEntreprise)
 
 // * update entreprise
-.put('/profile', updateEntreprise)
+.put('/updateprofile', updateEntreprise)
 
 // *deleteentreprise
 .delete('/', deleteEntreprise)
