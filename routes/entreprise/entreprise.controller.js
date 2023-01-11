@@ -211,7 +211,7 @@ const createEntreprise = (async (req, res) => {
 
 
         //! create the token
-        const token = jwt.sign(
+        const token = await jwt.sign(
             {
                 email, mdp, id
             },
