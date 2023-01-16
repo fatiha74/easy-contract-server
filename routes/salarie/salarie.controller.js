@@ -4,7 +4,7 @@ const pool = require('../../db.js')
 const hashPassword = require('../../middleware/hash_password.js');
 
 const jwt = require('jsonwebtoken')
-const SECRET =  process.env.SECRET
+const SECRET = process.env.SECRET
 
 const isEmail = require('validator/lib/isEmail')
 
@@ -79,14 +79,14 @@ const registerSalarie = (async (req, res) => {
         // * recuperer le id de l'entreprise qui vient d'etre cree
         salarie = newSalarie.rows[0]
         let id = salarie.salarie_id
-        let role=salarie.role
+        let role = salarie.role
 
 
 
         //!create the token
         const token = jwt.sign(
             {
-                email, mdp, id,role
+                email, mdp, id, role
             },
             SECRET,
             {
@@ -259,12 +259,12 @@ const loginSalarie = async (req, res) => {
         // salarie = salarie.rows[0]
         let id = salarie.salarie_id
         let role = salarie.role
-
+        
 
         //! ON CREE LE TOKENC
         const token = jwt.sign(
             {
-                email, mdp, id,role
+                email, mdp, id, role
             },
             SECRET,
             {

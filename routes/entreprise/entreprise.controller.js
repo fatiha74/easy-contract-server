@@ -46,8 +46,8 @@ const loginEntreprise = async (req, res) => {
             , [email]);
 
         entreprise = entreprise.rows[0]
+        console.log("entreprise",entreprise)
         let id = entreprise.entreprise_id
-        let role = entreprise.role
         console.log(5);
         if (!entreprise) {
             res.status(400).send('verifier vos identifiants')
@@ -64,7 +64,7 @@ const loginEntreprise = async (req, res) => {
         //create the token
         const token = jwt.sign(
             {
-                email, mdp, id,role
+                email, mdp, id
             },
             SECRET,
             {
