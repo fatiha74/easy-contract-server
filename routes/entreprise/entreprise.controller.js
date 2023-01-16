@@ -47,6 +47,7 @@ const loginEntreprise = async (req, res) => {
 
         entreprise = entreprise.rows[0]
         let id = entreprise.entreprise_id
+        let role = entreprise.role
         console.log(5);
         if (!entreprise) {
             res.status(400).send('verifier vos identifiants')
@@ -63,7 +64,7 @@ const loginEntreprise = async (req, res) => {
         //create the token
         const token = jwt.sign(
             {
-                email, mdp, id
+                email, mdp, id,role
             },
             SECRET,
             {
@@ -167,7 +168,7 @@ const createEntreprise = (async (req, res) => {
         // let { civilite, nom, prenom, telephone, rue, cp, ville, email, mdp, role, siret, raison_sociale, code_ape } = req.body;
 
         // on recupere la valeur de l'attribut
-        let { civilite, nom, prenom, telephone, rue, cp, ville, email, mdp, siret, raison_sociale, code_ape } = req.body;
+        let { civilite, nom, prenom, telephone, rue, cp, ville, email, mdp, siret, raison_sociale, code_ape,signature } = req.body;
 
         // la valeur dans values $1 recupere la description que l'on a ecrit sur postman
         // RETURNING * retourne à chaque fois la data ici description que l'on peut voir sur postman
@@ -198,22 +199,20 @@ const createEntreprise = (async (req, res) => {
             mdp,
             siret,
             raison_sociale,
-            code_ape) 
-        VALUES($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12) 
+            code_ape,signature) 
+        VALUES($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13) 
         RETURNING * `,
-            [civilite, nom, prenom, telephone, rue, cp, ville, email, mdp, siret, raison_sociale, code_ape]);
+            [civilite, nom, prenom, telephone, rue, cp, ville, email, mdp, siret, raison_sociale, code_ape,signature]);
         console.log(newEntreprise)
         // * recuperer le id de l'entreprise qui vient d'etre cree
         let ent = newEntreprise.rows[0]
         let id = ent.entreprise_id
-
-
-
+        let role = ent.entreprise_role
 
         //! create the token
-        const token = await jwt.sign(
+        const token =  jwt.sign(
             {
-                email, mdp, id
+                email, mdp, id, role
             },
             SECRET,
             {

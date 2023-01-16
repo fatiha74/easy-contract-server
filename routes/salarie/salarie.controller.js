@@ -79,13 +79,14 @@ const registerSalarie = (async (req, res) => {
         // * recuperer le id de l'entreprise qui vient d'etre cree
         salarie = newSalarie.rows[0]
         let id = salarie.salarie_id
+        let role=salarie.role
 
 
 
         //!create the token
         const token = jwt.sign(
             {
-                email, mdp, id
+                email, mdp, id,role
             },
             SECRET,
             {
@@ -257,12 +258,13 @@ const loginSalarie = async (req, res) => {
         // * on recupere le id du salarie
         // salarie = salarie.rows[0]
         let id = salarie.salarie_id
+        let role = salarie.role
 
 
         //! ON CREE LE TOKENC
         const token = jwt.sign(
             {
-                email, mdp, id
+                email, mdp, id,role
             },
             SECRET,
             {
