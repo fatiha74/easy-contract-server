@@ -47,6 +47,7 @@ const loginEntreprise = async (req, res) => {
 
         entreprise = entreprise.rows[0]
         console.log("entreprise",entreprise)
+        
         let id = entreprise.entreprise_id
         console.log(5);
         if (!entreprise) {
@@ -62,7 +63,7 @@ const loginEntreprise = async (req, res) => {
         }
         console.log(6);
         //create the token
-        const token = jwt.sign(
+        const token = await jwt.sign(
             {
                 email, mdp, id
             },
