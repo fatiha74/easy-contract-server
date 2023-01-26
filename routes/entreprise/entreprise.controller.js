@@ -21,22 +21,21 @@ const test = (async (req, res) => {
 const loginEntreprise = async (req, res) => {
     console.log("login")
     // console.log(req)
-    console.log(1);
+  
     try {
-        console.log(2);
         let {
             email,
             mdp
         } = req.body; // = const description = req.body.description
-        console.log(3);
+       
         //validate mail
         if (!isEmail(email)) {
             res.status(400).send('email invalid')
         }
-        console.log(4);
+     
         //!hash le password
         mdp = hashPassword(mdp)
-        console.log(1);
+      
         //vérifier si l'utilisateur existe
 
         let entreprise = await pool.query(`
@@ -46,10 +45,10 @@ const loginEntreprise = async (req, res) => {
             , [email]);
 
         entreprise = entreprise.rows[0]
-        console.log("entreprise",entreprise)
         
+        // on recupere l'id
         let id = entreprise.entreprise_id
-        console.log(5);
+     
         if (!entreprise) {
             res.status(400).send('verifier vos identifiants')
             return false;
@@ -61,7 +60,7 @@ const loginEntreprise = async (req, res) => {
             res.status(400).send('verifier vos identifiants')
             return false;
         }
-        console.log(6);
+      
         //create the token
         const token = await jwt.sign(
             {
@@ -74,7 +73,7 @@ const loginEntreprise = async (req, res) => {
         )
         // on envoit la reponse de la requete et le token
         res.json({ ...entreprise, token })
-        console.log(7);
+       
     } catch (err) {
         console.log("------------------------------------------");
         console.log(err.message);
@@ -150,9 +149,7 @@ const getEntreprise = (async (req, res) => {
         res.json(entreprise.rows[0]);
     } catch (err) {
         console.log(req.body)
-
         res.status(400).send(err.message)
-
     }
 })
 
@@ -170,7 +167,7 @@ const createEntreprise = (async (req, res) => {
 
         // on recupere la valeur de l'attribut
         let { civilite, nom, prenom, telephone, rue, cp, ville, email, mdp, siret, raison_sociale, code_ape,signature } = req.body;
-
+console.log("signature",signature)
         // la valeur dans values $1 recupere la description que l'on a ecrit sur postman
         // RETURNING * retourne à chaque fois la data ici description que l'on peut voir sur postman
 
@@ -190,7 +187,8 @@ const createEntreprise = (async (req, res) => {
         //     [civilite, nom, prenom, telephone, rue, cp, ville, email, mdp, role, siret, raison_sociale, code_ape]);
 
         let newEntreprise = await pool.query(`INSERT INTO entreprise 
-        (civilite,nom,
+        (civilite,
+            nom,
             prenom,
             telephone,
             rue,
@@ -200,7 +198,8 @@ const createEntreprise = (async (req, res) => {
             mdp,
             siret,
             raison_sociale,
-            code_ape,signature) 
+            code_ape,
+            signature) 
         VALUES($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13) 
         RETURNING * `,
             [civilite, nom, prenom, telephone, rue, cp, ville, email, mdp, siret, raison_sociale, code_ape,signature]);
@@ -297,11 +296,11 @@ const getProfileEntreprise = (async (req, res) => {
     const { id } = req.entreprise
 
     try {
-        const allEntreprise = await pool.query(`
+        const entreprise = await pool.query(`
         SELECT * 
         FROM entreprise 
         where entreprise_id=$1`, [id]);
-        res.json(allEntreprise.rows[0]);
+        res.json(entreprise.rows[0]);
     } catch (err) {
         res.status(400).send(err.message)
     }
